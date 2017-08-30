@@ -3,9 +3,8 @@ package fsu
 import (
 	"encoding/json"
 	"fmt"
+	"fsuExec"
 	"net"
-	"os"
-	"os/exec"
 	"time"
 )
 
@@ -59,8 +58,7 @@ func handClient(conn *net.UDPConn) {
 			continue
 		}
 		if info.Type == "Cmd" {
-			createSh(info.ExtInfo)
-			out, err := exec.Command("test.bat").Output()
+			out, err := fsuExec.ExecCmd(info.ExtInfo)
 			if err != nil {
 				fmt.Println(err)
 				continue
@@ -71,17 +69,6 @@ func handClient(conn *net.UDPConn) {
 			conn.Write(must(json.Marshal(info)))
 		}
 	}
-}
-
-func createSh(cmd string) {
-	fileNmae := "test.bat"
-	fout, err := os.Create(fileNmae)
-	defer fout.Close()
-	if err != nil {
-		fmt.Println(fileNmae, err)
-		return
-	}
-	fout.WriteString(cmd)
 }
 
 func must(info []byte, err error) []byte {
