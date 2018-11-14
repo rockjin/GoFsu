@@ -1,3 +1,5 @@
 /pkg
 *.exe
 /src/.vs
+bin
+*.manifest

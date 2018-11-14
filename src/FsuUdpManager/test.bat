@@ -1,1 +1,1 @@
-ping localhost -r 3
+dir
